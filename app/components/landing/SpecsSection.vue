@@ -104,6 +104,12 @@
 import { ref, computed } from 'vue'
 import { ArrowRight } from '@lucide/vue'
 
+// Import assets so Vite compiles and bundles them correctly with proper hashes/Base URLs
+import binImg from '~/assets/images/bin.jpeg'
+import hardwareImg from '~/assets/images/hardware.jpeg'
+import mechanismImg from '~/assets/images/mechanism.jpeg'
+import specsImg from '~/assets/images/specs.jpeg'
+
 const activeId = ref('chassis')
 
 const specs = [
@@ -113,7 +119,7 @@ const specs = [
     category: 'Structure',
     shortVal: 'Design & Dimensions',
     title: 'Premium Industrial Design',
-    img: '/images/features/bin.jpeg',
+    img: binImg,
     desc: 'The SmartBin features a sleek, robust stainless steel enclosure designed for premium office spaces, public buildings, and smart campuses. It stands 130 cm tall with a ø60 cm footprint, blending elegantly into modern architectural environments.',
     pills: ['130 cm Height', 'ø60 cm Footprint', 'Stainless Steel Build', 'Premium Aesthetics']
   },
@@ -131,7 +137,7 @@ const specs = [
     category: 'Capacity',
     shortVal: 'Quad-Chute 320L Volume',
     title: 'Quad 80L Waste Segregation',
-    img: '/images/features/bin.jpeg',
+    img: binImg,
     desc: 'Houses 4 independent, odor-insulated 80-liter collection bins (320 liters total volume). Ideal for multi-chute sorting of plastic, organic waste, paper, and non-recyclables.',
     pills: ['4 x 80 Liters', '320L Total Capacity', 'Odor-Sealed Chutes', 'Clean Separation']
   },
@@ -141,7 +147,7 @@ const specs = [
     category: 'Computing',
     shortVal: 'Nvidia Jetson Orin Nano',
     title: 'Edge AI Supercomputer',
-    img: '/images/features/hardware.jpeg',
+    img: hardwareImg,
     desc: 'Powered by the Nvidia Jetson Orin Nano system-on-module. Delivers 40 TOPS of AI compute, executing complex deep neural networks on the edge in milliseconds for offline waste classification and total user privacy.',
     pills: ['Nvidia Jetson', '40 TOPS AI Compute', 'Edge Deep Learning', 'Absolute Privacy']
   },
@@ -150,7 +156,7 @@ const specs = [
     category: 'Vision',
     shortVal: '8MP High-Precision Camera',
     title: 'AI High-Res Optics',
-    img: '/images/features/hardware.jpeg',
+    img: hardwareImg,
     desc: 'Features a high-resolution 8-megapixel wide-angle camera sensor mounted in the bin crown. Paired with integrated LED ring-illumination to capture clear frames of discarded objects under any lighting.',
     pills: ['8MP Sensor', 'Wide-Angle Optics', 'LED Ring Flash', 'Instant Trigger']
   },
@@ -160,7 +166,7 @@ const specs = [
     category: 'Mechanics',
     shortVal: 'Motorized Flap Router',
     title: 'Fast & Precise Sorting Mechanism',
-    img: '/images/features/mechanism.jpeg',
+    img: mechanismImg,
     desc: 'Equipped with a high-durability, motorized trapdoor mechanism that routes trash into its correct internal compartment in under 1.2 seconds. Features anti-jam safety optical sensors.',
     pills: ['< 1.2s Shifting Time', 'High-Torque Steppers', 'Anti-Jam Safeguards', 'Tested to 1M+ Cycles']
   },
@@ -169,7 +175,7 @@ const specs = [
     category: 'Software AI',
     shortVal: '95%+ Classification Model',
     title: '90+ Categories Detected',
-    img: '/images/features/specs.jpeg',
+    img: specsImg,
     desc: 'The embedded computer vision model distinguishes paper, aluminum cans, PET bottles, food waste, and specialty categories with 95%+ sorting accuracy, sending analytics reports directly to the cloud dashboard.',
     pills: ['95%+ Accuracy', '90+ Waste Categories', 'Cloud Analytics Reports', 'Continuous Learning']
   }

@@ -2,7 +2,7 @@
   <header class="header-bar">
     <div class="container nav-content">
       <a href="#" class="logo-container">
-        <img src="/images/features/logo.jpeg" alt="Virginasia Logo" class="brand-logo-img" />
+        <img src="~/assets/images/Logo.jpg" alt="Virginasia Logo" class="brand-logo-img" />
         <span class="brand-name">SmartBin</span>
       </a>
       <nav class="nav-links">
