@@ -3,6 +3,16 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
+  ssr: false,
+
+  app: {
+    baseURL: "/SmartBin/"
+  },
+
+  nitro: {
+    preset: "github_pages"
+  },
+
   // Nuxt 4 future compatibility
   future: {
     compatibilityVersion: 4,
