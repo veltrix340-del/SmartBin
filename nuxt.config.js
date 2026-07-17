@@ -22,7 +22,7 @@ export default defineNuxtConfig({
   },
 
   app: {
-    baseURL: "/SmartBin/",
+    baseURL: "/",
 
     head: {
       charset: "utf-8",
