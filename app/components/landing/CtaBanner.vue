@@ -11,12 +11,12 @@
             Join the cities and enterprises building cleaner, smarter operations with SmartBin.
           </p>
           <div class="cta-actions">
-            <a href="#" class="btn-white">
+            <NuxtLink to="/coming-soon" class="btn-white">
               Book a Demo <ArrowRight class="h-4 w-4" />
-            </a>
-            <a href="#" class="btn-translucent">
+            </NuxtLink>
+            <NuxtLink to="/coming-soon" class="btn-translucent">
               Contact Sales
-            </a>
+            </NuxtLink>
           </div>
         </div>
       </div>

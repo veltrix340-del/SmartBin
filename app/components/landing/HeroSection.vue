@@ -23,9 +23,9 @@
           SmartBin technology — built for smart cities, industries, and enterprises.
         </p>
         <div class="hero-cta">
-          <a href="#cta" class="btn-large brand-gradient shadow-glow-green">
+          <NuxtLink to="/coming-soon" class="btn-large brand-gradient shadow-glow-green">
             Request Demo <ArrowRight class="h-4 w-4" />
-          </a>
+          </NuxtLink>
         </div>
         <div class="hero-stats-row">
           <div
