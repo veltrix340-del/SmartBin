@@ -2,96 +2,42 @@
   <section id="specs" class="specs-section relative">
     <div class="container">
       <LandingSectionHead eyebrow="Technical Specs">
-        Interactive <span class="text-gradient">Explorer</span>
+        Product <span class="text-gradient">Specifications</span>
       </LandingSectionHead>
       <p class="text-center section-sub" style="margin-top: -2.5rem; margin-bottom: 4.5rem;">
         Explore the advanced hardware design, mechanical engineering, and edge AI powering the SmartBin.
       </p>
 
-      <div class="explorer-container">
-        <!-- Left Column: Large Media Showcase -->
+      <div class="specs-list">
         <div 
+          v-for="(item, i) in specs" 
+          :key="item.id"
           v-motion
-          :initial="{ opacity: 0, y: 30 }"
+          :initial="{ opacity: 0, y: 40 }"
           :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
-          class="explorer-showcase"
+          class="spec-row"
+          :class="{ 'row-reverse': i % 2 !== 0 }"
         >
-          <!-- Media Wrapper -->
-          <div class="explorer-media-wrapper">
-            <!-- Render SVG wireframe if the blueprint model is selected with wireframe style, else render image -->
-            <div v-if="activeItem.blueprintSvg" class="explorer-blueprint-frame">
-              <!-- Y Axis Indicator (Height) -->
-              <div class="explorer-line-y">
-                <span class="explorer-label-y">Height: 130 cm</span>
-              </div>
-
-              <!-- SVG wireframe representation of the SmartBin -->
-              <svg class="explorer-blueprint-svg" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
-                <rect x="15" y="40" width="70" height="150" rx="10" />
-                <rect x="30" y="55" width="40" height="25" rx="3" style="stroke-dasharray: 2,2;" />
-                <circle cx="50" cy="67.5" r="4" />
-                <rect x="25" y="95" width="50" height="25" rx="5" />
-                <path d="M 25 40 Q 50 15 75 40 Z" />
-                <circle cx="50" cy="30" r="3" style="fill: var(--brand-green);" />
-                <line x1="50" y1="120" x2="50" y2="190" style="stroke-dasharray: 3,3;" />
-                <line x1="15" y1="155" x2="85" y2="155" style="stroke-dasharray: 3,3;" />
-              </svg>
-
-              <!-- X Axis Indicator (Diameter) -->
-              <div class="explorer-line-x">
-                <span class="explorer-label-x">Diameter: ø60 cm</span>
-              </div>
-            </div>
-
-            <!-- Standard Image render -->
-            <img 
-              v-else 
-              :key="activeItem.id"
-              :src="activeItem.img" 
-              :alt="activeItem.title" 
-              class="explorer-media-img"
-            />
+          <!-- Image Column -->
+          <div class="spec-image-col">
+            <div class="spec-image-glow-bg"></div>
+            <img :src="item.img" :alt="item.title" class="spec-showcase-img" />
           </div>
 
-          <!-- Technical Detail Panel -->
-          <div class="explorer-detail-pane">
-            <h4 class="explorer-detail-title">{{ activeItem.title }}</h4>
-            <p class="explorer-detail-desc">{{ activeItem.desc }}</p>
-            <div class="explorer-pills-row">
+          <!-- Content Column -->
+          <div class="spec-content-col">
+            <span class="spec-category">{{ item.category }}</span>
+            <h3 class="spec-title">{{ item.title }}</h3>
+            <p class="spec-desc">{{ item.desc }}</p>
+            <div class="spec-pills">
               <span 
-                v-for="(pill, i) in activeItem.pills" 
+                v-for="(pill, index) in item.pills" 
                 :key="pill" 
-                class="explorer-pill"
-                :class="{ 'alt-color': i % 2 !== 0 }"
+                class="spec-pill-tag"
+                :class="{ 'alt-tag': index % 2 !== 0 }"
               >
                 {{ pill }}
               </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Column: Explorer Index Sidebar -->
-        <div class="explorer-sidebar">
-          <div 
-            v-for="group in groups" 
-            :key="group.title" 
-            class="explorer-group"
-          >
-            <div class="explorer-group-title">{{ group.title }}</div>
-            <div class="explorer-item-list">
-              <button 
-                v-for="item in group.items" 
-                :key="item.id"
-                class="explorer-item"
-                :class="{ 'is-active': activeId === item.id }"
-                @click="activeId = item.id"
-              >
-                <div class="explorer-item-content">
-                  <span class="explorer-item-label">{{ item.category }}</span>
-                  <span class="explorer-item-val">{{ item.shortVal }}</span>
-                </div>
-                <ArrowRight class="h-5 w-5 explorer-item-arrow" />
-              </button>
             </div>
           </div>
         </div>
@@ -101,102 +47,216 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { ArrowRight } from '@lucide/vue'
-
-// Import assets so Vite compiles and bundles them correctly with proper hashes/Base URLs
-import binImg from '~/assets/images/bin.jpeg'
-import hardwareImg from '~/assets/images/hardware.jpeg'
-import mechanismImg from '~/assets/images/mechanism.jpeg'
-import specsImg from '~/assets/images/specs.jpeg'
-
-const activeId = ref('chassis')
+// Import all existing high-quality product images (excluding table spec screenshot)
+import chassisImg from '~/assets/images/WhatsApp Image 2026-07-19 at 9.42.44 PM.jpeg'
+import blueprintImg from '~/assets/images/blueprint.jpeg'
+import computingImg from '~/assets/images/WhatsApp Image 2026-07-19 at 9.42.45 PM.jpeg'
+import visionImg from '~/assets/images/WhatsApp Image 2026-07-19 at 9.42.45 PM (1).jpeg'
 
 const specs = [
-  // Build specs
   {
     id: 'chassis',
-    category: 'Structure',
-    shortVal: 'Design & Dimensions',
+    category: 'Structure & Build',
     title: 'Premium Industrial Design',
-    img: binImg,
-    desc: 'The SmartBin features a sleek, robust stainless steel enclosure designed for premium office spaces, public buildings, and smart campuses. It stands 130 cm tall with a ø60 cm footprint, blending elegantly into modern architectural environments.',
-    pills: ['130 cm Height', 'ø60 cm Footprint', 'Stainless Steel Build', 'Premium Aesthetics']
+    img: chassisImg,
+    desc: 'The SmartBin features a sleek, robust stainless steel enclosure designed for premium office spaces, public buildings, and smart campuses. Standing 130 cm tall with a ø60 cm footprint, it integrates a 10.1-inch user feedback screen.',
+    pills: ['Stainless Steel', '4x80L Capacity', '10.1" Full HD Screen', 'ø60 cm Footprint']
   },
   {
     id: 'blueprint',
     category: 'Engineering',
-    shortVal: 'Technical Blueprint',
     title: 'Precision Dimension Schematic',
-    blueprintSvg: true,
-    desc: 'A precise CAD blueprint highlighting the internal layout, sensor housing, and physical dimensions. Engineered to maximize internal collection volume while preserving a compact floor footprint.',
+    img: blueprintImg,
+    desc: 'A precise schematic highlighting the internal layout, sensor housing, and physical dimensions. Engineered to maximize internal collection volume while preserving a compact floor footprint.',
     pills: ['ø60 cm Footprint', '130 cm Height', '4 Chutes', 'Sealed Chassis']
   },
   {
-    id: 'volume',
-    category: 'Capacity',
-    shortVal: 'Quad-Chute 320L Volume',
-    title: 'Quad 80L Waste Segregation',
-    img: binImg,
-    desc: 'Houses 4 independent, odor-insulated 80-liter collection bins (320 liters total volume). Ideal for multi-chute sorting of plastic, organic waste, paper, and non-recyclables.',
-    pills: ['4 x 80 Liters', '320L Total Capacity', 'Odor-Sealed Chutes', 'Clean Separation']
-  },
-  // Electronics
-  {
-    id: 'jetson',
-    category: 'Computing',
-    shortVal: 'Nvidia Jetson Orin Nano',
-    title: 'Edge AI Supercomputer',
-    img: hardwareImg,
+    id: 'computing',
+    category: 'Edge Computing',
+    title: 'Nvidia Jetson AI Hardware',
+    img: computingImg,
     desc: 'Powered by the Nvidia Jetson Orin Nano system-on-module. Delivers 40 TOPS of AI compute, executing complex deep neural networks on the edge in milliseconds for offline waste classification and total user privacy.',
-    pills: ['Nvidia Jetson', '40 TOPS AI Compute', 'Edge Deep Learning', 'Absolute Privacy']
+    pills: ['Nvidia Jetson', '40 TOPS Compute', 'Local Inference', 'Data Privacy']
   },
   {
-    id: 'camera',
-    category: 'Vision',
-    shortVal: '8MP High-Precision Camera',
-    title: 'AI High-Res Optics',
-    img: hardwareImg,
+    id: 'vision',
+    category: 'Computer Vision',
+    title: '8MP High-Resolution Optics',
+    img: visionImg,
     desc: 'Features a high-resolution 8-megapixel wide-angle camera sensor mounted in the bin crown. Paired with integrated LED ring-illumination to capture clear frames of discarded objects under any lighting.',
     pills: ['8MP Sensor', 'Wide-Angle Optics', 'LED Ring Flash', 'Instant Trigger']
-  },
-  // Mechanical / AI
-  {
-    id: 'router',
-    category: 'Mechanics',
-    shortVal: 'Motorized Flap Router',
-    title: 'Fast & Precise Sorting Mechanism',
-    img: mechanismImg,
-    desc: 'Equipped with a high-durability, motorized trapdoor mechanism that routes trash into its correct internal compartment in under 1.2 seconds. Features anti-jam safety optical sensors.',
-    pills: ['< 1.2s Shifting Time', 'High-Torque Steppers', 'Anti-Jam Safeguards', 'Tested to 1M+ Cycles']
-  },
-  {
-    id: 'sorting',
-    category: 'Software AI',
-    shortVal: '95%+ Classification Model',
-    title: '90+ Categories Detected',
-    img: specsImg,
-    desc: 'The embedded computer vision model distinguishes paper, aluminum cans, PET bottles, food waste, and specialty categories with 95%+ sorting accuracy, sending analytics reports directly to the cloud dashboard.',
-    pills: ['95%+ Accuracy', '90+ Waste Categories', 'Cloud Analytics Reports', 'Continuous Learning']
   }
 ]
-
-const groups = [
-  {
-    title: 'Physical Build & Design',
-    items: [specs[0], specs[1], specs[2]]
-  },
-  {
-    title: 'Electronics & Vision',
-    items: [specs[3], specs[4]]
-  },
-  {
-    title: 'Mechanics & Intelligence',
-    items: [specs[5], specs[6]]
-  }
-]
-
-const activeItem = computed(() => {
-  return specs.find(s => s.id === activeId.value) || specs[0]
-})
 </script>
+
+<style scoped>
+.specs-section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  background-color: var(--surface-2); /* Restore light theme background */
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .specs-section {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+.specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem; /* space between rows */
+  margin-top: 4rem;
+}
+
+@media (min-width: 1024px) {
+  .specs-list {
+    gap: 8rem;
+  }
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .spec-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5rem;
+  }
+}
+
+/* Alternating rows on desktop */
+@media (min-width: 1024px) {
+  .spec-row.row-reverse .spec-image-col {
+    order: 2;
+  }
+  .spec-row.row-reverse .spec-content-col {
+    order: 1;
+  }
+}
+
+/* Image Showcase Column */
+.spec-image-col {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 320px;
+  border-radius: 2rem;
+  background: linear-gradient(145deg, #0f1524 0%, #030712 100%); /* premium gradient backdrop */
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 12px 24px -10px rgba(0, 0, 0, 0.3),
+    0 24px 48px -12px rgba(0, 0, 0, 0.5); /* deep shadow stack */
+  overflow: hidden;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+@media (min-width: 640px) {
+  .spec-image-col {
+    height: 420px;
+  }
+}
+
+/* Ambient glow behind each image */
+.spec-image-glow-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.18) 0%, transparent 75%);
+  pointer-events: none;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.spec-showcase-img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.65)); /* realistic object shadow */
+}
+
+.spec-row:hover .spec-image-col {
+  border-color: rgba(16, 185, 129, 0.35); /* highlight container border on hover */
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 20px 40px rgba(16, 185, 129, 0.12), /* premium green ambient glow */
+    0 30px 60px -15px rgba(0, 0, 0, 0.6);
+}
+
+.spec-row:hover .spec-image-glow-bg {
+  transform: scale(1.1);
+  opacity: 1.3;
+}
+
+.spec-row:hover .spec-showcase-img {
+  transform: scale(1.05) translateY(-5px); /* scale and gentle lift */
+}
+
+/* Content Column */
+.spec-content-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.spec-category {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--brand-green);
+  margin-bottom: 0.75rem;
+}
+
+.spec-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--foreground); /* Light theme foreground (dark color) */
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+  .spec-title {
+    font-size: 2.25rem;
+  }
+}
+
+.spec-desc {
+  font-size: 1rem;
+  color: var(--muted-foreground); /* Light theme muted foreground (gray color) */
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.spec-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.spec-pill-tag {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background-color: var(--brand-green-soft);
+  color: var(--brand-green);
+  border: 1px solid color-mix(in oklab, var(--brand-green) 12%, transparent);
+}
+
+.spec-pill-tag.alt-tag {
+  background-color: var(--brand-blue-soft);
+  color: var(--brand-blue);
+  border: 1px solid color-mix(in oklab, var(--brand-blue) 12%, transparent);
+}
+</style>
