@@ -7,12 +7,7 @@
     <LandingSolutionSection />
     <LandingSpecsSection />
     <LandingHowItWorks />
-    <LandingBenefitsSection />
-    <LandingIndustriesSection />
-    <LandingSustainabilitySection />
-    <LandingFaqSection />
     <LandingAboutPromoters />
-    <LandingCtaBanner />
     <LandingFooterSection />
   </div>
 </template>
