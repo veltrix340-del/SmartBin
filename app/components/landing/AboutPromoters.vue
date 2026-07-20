@@ -8,17 +8,14 @@
         SmartBin is promoted by Virginasia eMarketing Pvt Ltd, committed to providing sustainable social e-solutions.
       </p>
 
-      <div 
-        v-motion
-        :initial="{ opacity: 0, y: 30 }"
-        :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
-        class="promoters-card glass-card relative overflow-hidden"
-      >
+      <div v-motion :initial="{ opacity: 0, y: 30 }" :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
+        class="promoters-card glass-card relative overflow-hidden">
         <div class="promoters-card-bg-glow brand-gradient" />
         <div class="promoters-card-content">
           <!-- Main Title/Header -->
           <div class="promoters-header-row">
-            <img src="~/assets/images/Logo.jpg" alt="Virginasia Logo" class="brand-logo-img" style="height: 3.5rem; width: 3.5rem; border-radius: 1rem;" />
+            <img src="~/assets/images/Logo.jpg" alt="Virginasia Logo" class="brand-logo-img"
+              style="height: 3.5rem; width: 3.5rem; border-radius: 1rem;" />
             <div>
               <h3 class="promoters-comp-name">VIRGINASIA EMARKETING (P) LTD</h3>
               <p class="promoters-comp-motto text-gradient">Committed to provide social e-solutions</p>
@@ -55,7 +52,8 @@
 
             <!-- MSME & Capital Card -->
             <div class="promoter-credential-card">
-              <div class="credential-icon-wrapper" style="background-color: var(--brand-blue-soft); color: var(--brand-blue);">
+              <div class="credential-icon-wrapper"
+                style="background-color: var(--brand-blue-soft); color: var(--brand-blue);">
                 <Wallet class="h-6 w-6" />
               </div>
               <h4 class="credential-card-title">MSME & Capital Structure</h4>
@@ -81,7 +79,8 @@
 
             <!-- Directors Card -->
             <div class="promoter-credential-card">
-              <div class="credential-icon-wrapper" style="background-color: var(--brand-green-soft); color: var(--brand-green);">
+              <div class="credential-icon-wrapper"
+                style="background-color: var(--brand-green-soft); color: var(--brand-green);">
                 <Users2 class="h-6 w-6" />
               </div>
               <h4 class="credential-card-title">Key Personnel</h4>
@@ -122,7 +121,8 @@
               <MapPin class="h-5 w-5 text-brand-green flex-shrink-0" />
               <div class="contact-block-details">
                 <span class="contact-label">Registered Office Address</span>
-                <span class="contact-val">HD 08, Beyond Co-working, Canal Road, Panampilly Nagar, Kadavanthra, Ernakulam, Kerala - 682020</span>
+                <span class="contact-val">Kerala Technology Innovation Zone, Kinfra Hi-Tech Park Main Rd, HMT Colony,
+                  P.O, Kalamassery, Kochi, Kerala 683503</span>
               </div>
             </div>
             <div class="contact-block-group">
@@ -130,14 +130,16 @@
                 <Phone class="h-5 w-5 text-brand-green flex-shrink-0" />
                 <div class="contact-block-details">
                   <span class="contact-label">Phone</span>
-                  <span class="contact-val">+91 94475 06311</span>
+                  <a href="tel:+919946650555"><span class="contact-val">9946650555</span></a>
                 </div>
               </div>
               <div class="contact-block">
                 <Mail class="h-5 w-5 text-brand-green flex-shrink-0" />
                 <div class="contact-block-details">
                   <span class="contact-label">Email Address</span>
-                  <span class="contact-val">virginasiacorporation@gmail.com</span>
+                  <a href="mailto:virginasiaemarketing@gmail.com"><span
+                      class="contact-val">virginasiaemarketing@gmail.com</span>
+                  </a>
                 </div>
               </div>
             </div>
