@@ -10,7 +10,6 @@
         <a href="#specs">Specs</a>
         <a href="#how">How it works</a>
         <a href="#organization">About</a>
-        <a href="#faq">FAQ</a>
       </nav>
       <div class="nav-actions">
         <!-- <a href="#cta" class="btn-text">Sign in</a> -->
@@ -32,20 +31,20 @@ let lastScrollPosition = 0
 
 const handleScroll = () => {
   const currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop
-  
+
   // Prevent negative scroll values (e.g. Safari bounce)
   if (currentScroll < 0) return
-  
+
   // Always reveal navbar at the top of the page
   if (currentScroll <= 10) {
     isHidden.value = false
     lastScrollPosition = currentScroll
     return
   }
-  
+
   const diff = currentScroll - lastScrollPosition
   const threshold = 5 // Minimum pixels scrolled to trigger state change
-  
+
   if (Math.abs(diff) >= threshold) {
     if (diff > 0) {
       // Scrolling down: hide navbar
@@ -79,7 +78,8 @@ onUnmounted(() => {
 }
 
 .nav-content {
-  height: 4.75rem; /* Increased height from 4rem */
+  height: 4.75rem;
+  /* Increased height from 4rem */
   transition: height 0.3s ease;
 }
 </style>
