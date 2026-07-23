@@ -297,12 +297,22 @@ input {
 
 /* Navigation Bar */
 .header-bar {
+  position: fixed;
   top: 0;
-  z-index: 50;
-  position: sticky;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
   backdrop-filter: blur(24px);
-  background-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+
+  transition: transform 0.35s ease;
+  will-change: transform;
+}
+
+.header-hidden {
+  transform: translateY(-100%);
 }
 
 .nav-content {

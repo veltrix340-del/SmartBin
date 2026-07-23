@@ -27,39 +27,33 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { ArrowRight } from '@lucide/vue'
 
 const isHidden = ref(false)
-let lastScrollPosition = 0
+let lastScroll = 0
 
 const handleScroll = () => {
-  const currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop
+  const current = window.scrollY
 
-  // Prevent negative scroll values (e.g. Safari bounce)
-  if (currentScroll < 0) return
-
-  // Always reveal navbar at the top of the page
-  if (currentScroll <= 10) {
+  // Always show navbar at the top
+  if (current <= 10) {
     isHidden.value = false
-    lastScrollPosition = currentScroll
+    lastScroll = current
     return
   }
 
-  const diff = currentScroll - lastScrollPosition
-  const threshold = 5 // Minimum pixels scrolled to trigger state change
-
-  if (Math.abs(diff) >= threshold) {
-    if (diff > 0) {
-      // Scrolling down: hide navbar
-      isHidden.value = true
-    } else {
-      // Scrolling up: reveal navbar
-      isHidden.value = false
-    }
-    // Update reference position only when threshold is crossed to accumulate slow scroll progress
-    lastScrollPosition = currentScroll
+  // Hide when scrolling down
+  if (current > lastScroll) {
+    isHidden.value = true
   }
+
+  // Show when scrolling up
+  if (current < lastScroll) {
+    isHidden.value = false
+  }
+
+  lastScroll = current
 }
 
 onMounted(() => {
-  lastScrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop
+  lastScroll = window.scrollY
   window.addEventListener('scroll', handleScroll, { passive: true })
 })
 
