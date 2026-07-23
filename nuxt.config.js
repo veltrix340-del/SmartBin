@@ -21,6 +21,16 @@ export default defineNuxtConfig({
     autoImport: true,
   },
 
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => tag === 'model-viewer'
+    }
+  },
+
+  vite: {
+    assetsInclude: ['**/*.glb', '**/*.gltf']
+  },
+
   app: {
     baseURL: "/",
 
@@ -36,6 +46,8 @@ export default defineNuxtConfig({
             "Monitor, track, and optimize waste collection in real time using IoT-powered SmartBin technology."
         }
       ],
+
+
 
       link: [
         {

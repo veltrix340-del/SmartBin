@@ -3,7 +3,8 @@
     <div class="container footer-top-grid">
       <div class="footer-brand-col">
         <div class="footer-logo-row">
-          <img src="~/assets/images/Logo.jpg" alt="Virginasia Logo" class="brand-logo-img" />
+          <img src="~/assets/images/Logo.jpg" alt="Virginasia Logo" class="brand-logo-img"
+            style="height: 100px; width: auto;" />
           <span class="footer-logo-text">SmartBin</span>
         </div>
         <p class="footer-desc">
