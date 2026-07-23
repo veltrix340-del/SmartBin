@@ -15,7 +15,7 @@
           <!-- Main Title/Header -->
           <div class="promoters-header-row">
             <img src="~/assets/images/Logo.jpg" alt="Virginasia Logo" class="brand-logo-img"
-              style="height: 3.5rem; width: 3.5rem; border-radius: 1rem;" />
+              style="height: 130px; width: auto; border-radius: 1rem;" />
             <div>
               <h3 class="promoters-comp-name">VIRGINASIA EMARKETING (P) LTD</h3>
               <p class="promoters-comp-motto text-gradient">Committed to provide social e-solutions</p>

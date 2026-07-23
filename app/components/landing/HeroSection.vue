@@ -54,14 +54,20 @@
           <div class="hero-visual-ring-2" />
           <div class="hero-visual-ring-3" />
 
-          <!-- Hero image -->
+          <!-- Hero 3D Model -->
           <div class="hero-visual-img-container animate-float">
-            <img
-              src="/smartbin-hero.jpg"
-              alt="SmartBin IoT device with holographic data signals"
-              width="560" height="560"
-              class="hero-visual-img"
-            />
+            <model-viewer
+              :src="modelUrl"
+              alt="SmartBin 3D Model"
+              auto-rotate
+              camera-controls
+              ar
+              shadow-intensity="1"
+              environment-image="neutral"
+              exposure="1"
+              interaction-prompt="none"
+              class="hero-3d-model"
+            ></model-viewer>
           </div>
 
           <!-- Floating data chips -->
@@ -116,6 +122,14 @@
 
 <script setup>
 import { ArrowRight, Wifi, Gauge, Signal, Leaf } from '@lucide/vue'
+import { onMounted } from 'vue'
+
+const config = useRuntimeConfig()
+const modelUrl = `${config.app.baseURL}models/3d-model.glb`
+
+onMounted(async () => {
+  await import('@google/model-viewer')
+})
 
 const stats = [
   { v: '95%', l: 'Collection Efficiency' },
@@ -124,3 +138,12 @@ const stats = [
   { v: 'AI', l: 'Powered Analytics' },
 ]
 </script>
+
+<style scoped>
+.hero-3d-model {
+  width: 90%;
+  height: 90%;
+  outline: none;
+  --poster-color: transparent;
+}
+</style>
