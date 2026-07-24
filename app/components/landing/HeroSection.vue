@@ -43,10 +43,9 @@
           <div class="hero-visual-ring-2" />
           <div class="hero-visual-ring-3" />
 
-          <!-- Hero 3D Model -->
+          <!-- Hero 3D Canvas -->
           <div class="hero-visual-img-container animate-float">
-            <model-viewer :src="modelUrl" alt="SmartBin 3D Model" auto-rotate camera-controls ar shadow-intensity="1"
-              environment-image="neutral" exposure="1" interaction-prompt="none" class="hero-3d-model"></model-viewer>
+            <div ref="canvasContainer" class="hero-3d-container"></div>
           </div>
 
           <!-- Floating data chips -->
@@ -101,7 +100,10 @@
 
 <script setup>
 import { ArrowRight, Wifi, Gauge, Signal, Leaf } from '@lucide/vue'
-import { onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 const config = useRuntimeConfig()
 const canvasContainer = ref(null)
@@ -138,24 +140,33 @@ onMounted(() => {
   controls.autoRotateSpeed = 1.2
   controls.maxPolarAngle = Math.PI / 2 + 0.1
 
-  // 5. Add Lighting
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.9)
+  // 5. Add Premium Studio Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.35)
   scene.add(ambientLight)
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1.8)
-  dirLight.position.set(5, 10, 7)
-  dirLight.castShadow = true
-  dirLight.shadow.mapSize.width = 1024
-  dirLight.shadow.mapSize.height = 1024
-  dirLight.shadow.bias = -0.0001
-  scene.add(dirLight)
+  // Key Light (main front shadow/brightness source)
+  const keyLight = new THREE.DirectionalLight(0xffffff, 2.2)
+  keyLight.position.set(5, 10, 6)
+  keyLight.castShadow = true
+  keyLight.shadow.mapSize.width = 2048
+  keyLight.shadow.mapSize.height = 2048
+  keyLight.shadow.bias = -0.0001
+  keyLight.shadow.normalBias = 0.02
+  scene.add(keyLight)
 
-  const fillLight = new THREE.DirectionalLight(0x7dd3fc, 0.8) // soft light cyan
-  fillLight.position.set(-6, 4, -6)
+  // Fill Light (lifts shadows with a cyan tone to match brand accent)
+  const fillLight = new THREE.DirectionalLight(0x7dd3fc, 1.2)
+  fillLight.position.set(-6, 3, 4)
   scene.add(fillLight)
 
-  const topLight = new THREE.DirectionalLight(0xffffff, 0.6)
-  topLight.position.set(0, 10, 0)
+  // Rim Light (back-right, creates edge highlight separating bin from dark background)
+  const rimLight = new THREE.DirectionalLight(0xffffff, 2.5)
+  rimLight.position.set(-4, 8, -6)
+  scene.add(rimLight)
+
+  // Soft overhead light
+  const topLight = new THREE.DirectionalLight(0xffffff, 0.8)
+  topLight.position.set(0, 12, 0)
   scene.add(topLight)
 
   // 6. Load GLTF Model
@@ -185,13 +196,56 @@ onMounted(() => {
         if (child.isMesh) {
           child.castShadow = true
           child.receiveShadow = true
-
-          if (child.material) {
-            child.material.roughness = Math.min(child.material.roughness, 0.6)
-            child.material.metalness = Math.max(child.material.metalness, 0.15)
+          
+          const name = child.name.toLowerCase()
+          const parentName = child.parent ? child.parent.name.toLowerCase() : ''
+          
+          // Glowing LEDs
+          if (name.includes('led_strip') || name.includes('led_cover')) {
+            child.material = new THREE.MeshStandardMaterial({
+              color: 0x10b981, // brand green
+              emissive: 0x10b981,
+              emissiveIntensity: 3.5,
+              roughness: 0.1,
+              metalness: 0.8
+            })
+          } 
+          // Glowing TouchScreen
+          else if (name.includes('touchscreen') || parentName.includes('touchscreen')) {
+            child.material = new THREE.MeshStandardMaterial({
+              color: 0xffffff,
+              emissive: 0xffffff,
+              emissiveIntensity: 1.2,
+              roughness: 0.05,
+              metalness: 0.95
+            })
+          } 
+          // Standard metallic / cabinet meshes
+          else if (child.material) {
+            child.material.roughness = Math.min(child.material.roughness, 0.45)
+            child.material.metalness = Math.max(child.material.metalness, 0.25)
           }
         }
       })
+
+      // Add local point lights to project color from glowing parts
+      const ledCover = gltfModel.getObjectByName('LED_Cover_1') || gltfModel.getObjectByName('LED_Strip_1')
+      if (ledCover) {
+        const worldPos = new THREE.Vector3()
+        ledCover.getWorldPosition(worldPos)
+        const greenLight = new THREE.PointLight(0x10b981, 3.0, 2.0)
+        greenLight.position.copy(worldPos)
+        scene.add(greenLight)
+      }
+
+      const screenFrame = gltfModel.getObjectByName('TouchScreen_Frame') || gltfModel.getObjectByName('TouchScreen')
+      if (screenFrame) {
+        const worldPos = new THREE.Vector3()
+        screenFrame.getWorldPosition(worldPos)
+        const screenLight = new THREE.PointLight(0xffffff, 2.0, 1.5)
+        screenLight.position.copy(worldPos)
+        scene.add(screenLight)
+      }
 
       // Center model
       const box = new THREE.Box3().setFromObject(gltfModel)
@@ -266,10 +320,9 @@ const stats = [
 </script>
 
 <style scoped>
-.hero-3d-model {
-  width: 90%;
-  height: 90%;
+.hero-3d-container {
+  width: 100%;
+  height: 100%;
   outline: none;
-  --poster-color: transparent;
 }
 </style>
