@@ -7,7 +7,7 @@
     <header class="header-bar-simple relative z-10 w-full">
       <div class="container nav-content-simple">
         <NuxtLink to="/" class="logo-container">
-          <img src="~/assets/images/Logo.jpg" alt="SmartBin Logo" class="brand-logo-img" />
+          <img src="~/assets/images/Logo.webp" alt="SmartBin Logo" class="brand-logo-img" />
           <span class="brand-name">SmartBin</span>
         </NuxtLink>
         <NuxtLink to="/" class="btn-back-home">

@@ -14,7 +14,7 @@
         <div class="promoters-card-content">
           <!-- Main Title/Header -->
           <div class="promoters-header-row">
-            <img src="~/assets/images/Logo.jpg" alt="Virginasia eMarketing Pvt Ltd Corporate Logo" class="brand-logo-img"
+            <img src="~/assets/images/Logo.webp" alt="Virginasia eMarketing Pvt Ltd Corporate Logo" loading="lazy" class="brand-logo-img"
               style="height: 130px; width: auto; border-radius: 1rem;" />
             <div>
               <h3 class="promoters-comp-name">VIRGINASIA EMARKETING (P) LTD</h3>
