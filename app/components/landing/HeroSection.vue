@@ -109,11 +109,25 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 const config = useRuntimeConfig()
 const canvasContainer = ref(null)
 const webglSupported = ref(true)
+const isIntersecting = ref(true)
 
-let scene, camera, renderer, controls, animationFrameId, gltfModel
+let scene, camera, renderer, controls, animationFrameId, gltfModel, observer
 
 onMounted(() => {
   if (typeof window === 'undefined') return
+
+  // Set up IntersectionObserver to pause rendering when the model is off-screen
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isIntersecting.value = entry.isIntersecting
+      })
+    }, { threshold: 0.05 })
+
+    if (canvasContainer.value) {
+      observer.observe(canvasContainer.value)
+    }
+  }
 
   try {
     // 1. Create Scene
@@ -124,14 +138,18 @@ onMounted(() => {
     const height = canvasContainer.value ? canvasContainer.value.clientHeight : 500
     camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100)
 
-    // 3. Create Renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    // 3. Create Renderer (low power preference enabled for battery efficiency)
+    renderer = new THREE.WebGLRenderer({ 
+      antialias: true, 
+      alpha: true,
+      powerPreference: 'low-power'
+    })
     if (!renderer.getContext()) {
       throw new Error('WebGL context is not supported or was blocked')
     }
 
     renderer.setSize(width, height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)) // Cap pixel ratio to 1.5 for performance
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     renderer.toneMapping = THREE.ACESFilmicToneMapping
@@ -144,19 +162,19 @@ onMounted(() => {
     controls.dampingFactor = 0.05
     controls.enableZoom = true
     controls.autoRotate = true
-    controls.autoRotateSpeed = 1.2
+    controls.autoRotateSpeed = 1.0
     controls.maxPolarAngle = Math.PI / 2 + 0.1
 
     // 5. Add Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.35)
     scene.add(ambientLight)
 
-    // Key Light
+    // Key Light (optimized shadow map bounds)
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.2)
     keyLight.position.set(5, 10, 6)
     keyLight.castShadow = true
-    keyLight.shadow.mapSize.width = 2048
-    keyLight.shadow.mapSize.height = 2048
+    keyLight.shadow.mapSize.width = 1024 // Optimized from 2048 to 1024 for higher performance
+    keyLight.shadow.mapSize.height = 1024
     keyLight.shadow.bias = -0.00005
     keyLight.shadow.normalBias = 0.02
     keyLight.shadow.camera.left = -2
@@ -300,11 +318,22 @@ onMounted(() => {
       }
     )
 
-    // 7. Animation Loop
-    const animate = () => {
+    // 7. Animation Loop with FPS throttling and Visibility check
+    let lastRenderTime = 0
+    const fpsInterval = 1000 / 30 // Cap WebGL frame rate to 30 FPS for buttery smooth page performance
+
+    const animate = (timestamp = performance.now()) => {
       animationFrameId = requestAnimationFrame(animate)
-      controls.update()
-      renderer.render(scene, camera)
+      
+      // Pause rendering completely if Hero section is off-screen to avoid rendering overhead
+      if (!isIntersecting.value) return
+      
+      const elapsed = timestamp - lastRenderTime
+      if (elapsed >= fpsInterval) {
+        lastRenderTime = timestamp
+        controls.update()
+        renderer.render(scene, camera)
+      }
     }
     animate()
 
@@ -321,6 +350,9 @@ onMounted(() => {
 
     // 9. Cleanup on unmount
     onUnmounted(() => {
+      if (observer) {
+        observer.disconnect()
+      }
       window.removeEventListener('resize', handleResize)
       cancelAnimationFrame(animationFrameId)
       if (renderer) {
