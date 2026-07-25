@@ -41,7 +41,7 @@
 import chassisImg from '~/assets/images/front.webp'
 import blueprintImg from '~/assets/images/blueprint.jpeg'
 import computingImg from '~/assets/images/hardware.jpeg'
-import visionImg from '~/assets/images/back.webp'
+import visionImg from '~/assets/images/camera.webp'
 import displayImg from '~/assets/images/display.webp'
 
 const specs = [
