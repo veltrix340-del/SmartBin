@@ -15,7 +15,7 @@
           <!-- Image Column -->
           <div class="spec-image-col">
             <div class="spec-image-glow-bg"></div>
-            <img :src="item.img" :alt="item.title" class="spec-showcase-img" />
+            <img :src="item.img" :alt="item.title" loading="lazy" class="spec-showcase-img" />
           </div>
 
           <!-- Content Column -->
@@ -38,11 +38,11 @@
 
 <script setup>
 // Import all existing high-quality product images (excluding table spec screenshot)
-import chassisImg from '~/assets/images/front.png'
+import chassisImg from '~/assets/images/front.webp'
 import blueprintImg from '~/assets/images/blueprint.jpeg'
 import computingImg from '~/assets/images/hardware.jpeg'
-import visionImg from '~/assets/images/back.png'
-import displayImg from '~/assets/images/display.png'
+import visionImg from '~/assets/images/back.webp'
+import displayImg from '~/assets/images/display.webp'
 
 const specs = [
   {
@@ -67,7 +67,7 @@ const specs = [
     title: 'Raspberry Pi AI Hardware',
     img: computingImg,
     desc: 'Powered by the Raspberry Pi single-board computer, delivering efficient edge computing for IoT applications. Integrated with AI models and computer vision capabilities, it performs real-time waste classification, sensor processing, and local decision-making while minimizing cloud dependency and protecting user privacy.',
-    pills: ['Nvidia Jetson', '40 TOPS Compute', 'Local Inference', 'Data Privacy']
+    pills: ['Raspberry Pi', 'Edge Computing', 'Local Processing', 'Data Privacy']
   },
   {
     id: 'vision',

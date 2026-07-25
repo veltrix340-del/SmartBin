@@ -2,7 +2,7 @@
   <header :class="['header-bar', { 'header-hidden': isHidden }]">
     <div class="container nav-content">
       <NuxtLink to="/" class="logo-container">
-        <img src="~/assets/images/Logo.jpg" alt="SmartBin Logo - Virginasia eMarketing" class="brand-logo-img" />
+        <img src="~/assets/images/Logo.webp" alt="SmartBin Logo - Virginasia eMarketing" class="brand-logo-img" />
         <span class="brand-name">SmartBin</span>
       </NuxtLink>
       <nav class="nav-links">
