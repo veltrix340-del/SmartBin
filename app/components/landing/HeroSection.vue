@@ -150,8 +150,14 @@ onMounted(() => {
   keyLight.castShadow = true
   keyLight.shadow.mapSize.width = 2048
   keyLight.shadow.mapSize.height = 2048
-  keyLight.shadow.bias = -0.0001
+  keyLight.shadow.bias = -0.00005
   keyLight.shadow.normalBias = 0.02
+  keyLight.shadow.camera.left = -2
+  keyLight.shadow.camera.right = 2
+  keyLight.shadow.camera.top = 2
+  keyLight.shadow.camera.bottom = -2
+  keyLight.shadow.camera.near = 0.1
+  keyLight.shadow.camera.far = 25
   scene.add(keyLight)
 
   // Fill Light (lifts shadows with a cyan tone to match brand accent)
@@ -260,6 +266,15 @@ onMounted(() => {
       gltfModel.position.z = -center.z
 
       scene.add(gltfModel)
+
+      // Add a transparent shadow plane to receive shadows from the bin
+      const planeGeo = new THREE.PlaneGeometry(15, 15)
+      const planeMat = new THREE.ShadowMaterial({ opacity: 0.25 })
+      const shadowPlane = new THREE.Mesh(planeGeo, planeMat)
+      shadowPlane.rotation.x = -Math.PI / 2
+      shadowPlane.position.y = -size.y / 2 // align exactly at the bottom of the centered bin
+      shadowPlane.receiveShadow = true
+      scene.add(shadowPlane)
 
       // Fit camera orbit to bounding box
       const maxDim = Math.max(size.x, size.y, size.z)
