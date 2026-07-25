@@ -64,9 +64,9 @@ const specs = [
   {
     id: 'computing',
     category: 'Edge Computing',
-    title: 'Nvidia Jetson AI Hardware',
+    title: 'Raspberry Pi AI Hardware',
     img: computingImg,
-    desc: 'Powered by the Nvidia Jetson Orin Nano system-on-module. Delivers 40 TOPS of AI compute, executing complex deep neural networks on the edge in milliseconds for offline waste classification and total user privacy.',
+    desc: 'Powered by the Raspberry Pi single-board computer, delivering efficient edge computing for IoT applications. Integrated with AI models and computer vision capabilities, it performs real-time waste classification, sensor processing, and local decision-making while minimizing cloud dependency and protecting user privacy.',
     pills: ['Nvidia Jetson', '40 TOPS Compute', 'Local Inference', 'Data Privacy']
   },
   {
