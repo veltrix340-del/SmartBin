@@ -14,7 +14,7 @@
         <div class="promoters-card-content">
           <!-- Main Title/Header -->
           <div class="promoters-header-row">
-            <img src="~/assets/images/Logo.jpg" alt="Virginasia Logo" class="brand-logo-img"
+            <img src="~/assets/images/Logo.jpg" alt="Virginasia eMarketing Pvt Ltd Corporate Logo" class="brand-logo-img"
               style="height: 130px; width: auto; border-radius: 1rem;" />
             <div>
               <h3 class="promoters-comp-name">VIRGINASIA EMARKETING (P) LTD</h3>
@@ -90,11 +90,7 @@
                   <span class="dir-role">Managing Director</span>
                 </li>
                 <li class="director-item">
-                  <span class="dir-name">Devikrishna Krishnakumar</span>
-                  <span class="dir-role">Director</span>
-                </li>
-                <li class="director-item">
-                  <span class="dir-name">Sidharth Harikumar</span>
+                  <span class="dir-name">Radheesh M. A.</span>
                   <span class="dir-role">Director</span>
                 </li>
               </ul>

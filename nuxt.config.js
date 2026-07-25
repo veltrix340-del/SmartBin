@@ -35,6 +35,9 @@ export default defineNuxtConfig({
     baseURL: process.env.NUXT_APP_BASE_URL || "/",
 
     head: {
+      htmlAttrs: {
+        lang: "en"
+      },
       charset: "utf-8",
       viewport: "width=device-width, initial-scale=1",
       title: "SmartBin — Intelligent Waste Management Platform",
@@ -44,6 +47,14 @@ export default defineNuxtConfig({
           name: "description",
           content:
             "Monitor, track, and optimize waste collection in real time using IoT-powered SmartBin technology."
+        },
+        {
+          name: "keywords",
+          content: "SmartBin, IoT waste management, intelligent waste monitor, Virginasia eMarketing, smart city bin, AI waste sorting, solid waste monitoring, smart recycling bin, real-time waste tracking, smart recycling platform"
+        },
+        {
+          name: "robots",
+          content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         }
       ],
 
