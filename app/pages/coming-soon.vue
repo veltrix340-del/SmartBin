@@ -103,9 +103,21 @@ import {
 
 useSeoMeta({
   title: 'Request Demo — SmartBin Coming Soon',
-  description: 'Request early access to the SmartBin intelligent waste management platform and custom IoT-powered simulation sandbox.',
-  ogTitle: 'Request SmartBin Demo Sandbox',
-  ogDescription: 'Register for early access to SmartBin real-time waste analytics.',
+  description: 'Request early access to the SmartBin intelligent waste management platform and custom IoT-powered simulation sandbox. Contact Virginasia eMarketing.',
+  keywords: 'SmartBin demo, request demo, intelligent waste management, IoT sandbox, Virginasia, waste analytics sandbox',
+  ogTitle: 'Request Demo — SmartBin Coming Soon',
+  ogDescription: 'Request early access to the SmartBin intelligent waste management platform and custom IoT-powered simulation sandbox.',
+  ogImage: 'https://virginsmartbinai.com/smartbin-hero-dark.png',
+  ogUrl: 'https://virginsmartbinai.com/coming-soon',
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
+  robots: 'index, follow'
+})
+
+useHead({
+  link: [
+    { rel: 'canonical', href: 'https://virginsmartbinai.com/coming-soon' }
+  ]
 })
 </script>
 
