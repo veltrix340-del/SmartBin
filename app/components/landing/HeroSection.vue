@@ -45,7 +45,7 @@
 
           <!-- Hero 3D Canvas or Static Fallback Image -->
           <div class="hero-visual-img-container animate-float">
-            <div v-if="webglSupported && !isMobile" ref="canvasContainer" class="hero-3d-container"></div>
+            <div v-if="webglSupported" ref="canvasContainer" class="hero-3d-container"></div>
             <img v-else :src="`${config.app.baseURL}smartbin-hero-dark.png`" alt="SmartBin IoT device" class="hero-visual-img-fallback" />
           </div>
 
@@ -110,36 +110,11 @@ const config = useRuntimeConfig()
 const canvasContainer = ref(null)
 const webglSupported = ref(true)
 const isIntersecting = ref(true)
-const isMobile = ref(false)
 
 let scene, camera, renderer, controls, animationFrameId, gltfModel, observer
 
-const handleResizeWindow = () => {
-  if (typeof window !== 'undefined') {
-    isMobile.value = window.innerWidth < 768
-  }
-}
-
-const handleResize = () => {
-  if (!canvasContainer.value || !renderer || !camera) return
-  const w = canvasContainer.value.clientWidth
-  const h = canvasContainer.value.clientHeight
-  camera.aspect = w / h
-  camera.updateProjectionMatrix()
-  renderer.setSize(w, h)
-}
-
 onMounted(() => {
   if (typeof window === 'undefined') return
-
-  // Set mobile flag dynamically
-  isMobile.value = window.innerWidth < 768
-  window.addEventListener('resize', handleResizeWindow)
-
-  // Completely bypass 3D rendering setup on small screen sizes
-  if (isMobile.value) {
-    return
-  }
 
   // Set up IntersectionObserver to pause rendering when the model is off-screen
   if ('IntersectionObserver' in window) {
@@ -345,10 +320,12 @@ onMounted(() => {
 
     // 7. Animation Loop with FPS throttling and Visibility check
     let lastRenderTime = 0
-    const fpsInterval = 1000 / 30
+    const fpsInterval = 1000 / 30 // Cap WebGL frame rate to 30 FPS for buttery smooth page performance
 
     const animate = (timestamp = performance.now()) => {
       animationFrameId = requestAnimationFrame(animate)
+      
+      // Pause rendering completely if Hero section is off-screen to avoid rendering overhead
       if (!isIntersecting.value) return
       
       const elapsed = timestamp - lastRenderTime
@@ -360,30 +337,37 @@ onMounted(() => {
     }
     animate()
 
+    // 8. Handle Resize
+    const handleResize = () => {
+      if (!canvasContainer.value) return
+      const w = canvasContainer.value.clientWidth
+      const h = canvasContainer.value.clientHeight
+      camera.aspect = w / h
+      camera.updateProjectionMatrix()
+      renderer.setSize(w, h)
+    }
     window.addEventListener('resize', handleResize)
+
+    // 9. Cleanup on unmount
+    onUnmounted(() => {
+      if (observer) {
+        observer.disconnect()
+      }
+      window.removeEventListener('resize', handleResize)
+      cancelAnimationFrame(animationFrameId)
+      if (renderer) {
+        try {
+          renderer.forceContextLoss()
+        } catch (e) {}
+        renderer.dispose()
+      }
+      if (controls) {
+        controls.dispose()
+      }
+    })
   } catch (error) {
     console.error('Three.js initialization failed, falling back to static image:', error)
     webglSupported.value = false
-  }
-})
-
-onUnmounted(() => {
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', handleResizeWindow)
-    window.removeEventListener('resize', handleResize)
-  }
-  if (observer) {
-    observer.disconnect()
-  }
-  cancelAnimationFrame(animationFrameId)
-  if (renderer) {
-    try {
-      renderer.forceContextLoss()
-    } catch (e) {}
-    renderer.dispose()
-  }
-  if (controls) {
-    controls.dispose()
   }
 })
 
