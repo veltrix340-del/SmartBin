@@ -30,16 +30,6 @@
         </ul>
       </div>
 
-      <div class="footer-links-col-2">
-        <div class="footer-col-title">Company</div>
-        <ul class="footer-links-list">
-          <li><a href="#about">About</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Press</a></li>
-          <li><a href="#">Partners</a></li>
-        </ul>
-      </div>
-
       <div class="footer-contact-col">
         <div class="footer-col-title">Contact</div>
         <ul class="footer-contact-list">
@@ -75,11 +65,11 @@
     <div class="footer-bottom">
       <div class="container footer-bottom-content">
         <div>© {{ new Date().getFullYear() }} Virginasia eMarketing Pvt Ltd. All rights reserved.</div>
-        <div class="footer-bottom-links">
+        <!-- <div class="footer-bottom-links">
           <a href="#">Privacy</a>
           <a href="#">Terms</a>
           <a href="#">Security</a>
-        </div>
+        </div> -->
       </div>
     </div>
   </footer>

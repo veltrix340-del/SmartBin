@@ -1645,15 +1645,11 @@ input {
   }
 
   .footer-brand-col {
-    grid-column: span 4;
+    grid-column: span 5;
   }
 
   .footer-links-col-1 {
-    grid-column: span 2;
-  }
-
-  .footer-links-col-2 {
-    grid-column: span 2;
+    grid-column: span 3;
   }
 
   .footer-contact-col {
