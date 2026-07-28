@@ -60,21 +60,49 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 const config = useRuntimeConfig()
 const videoUrl = `${config.app.baseURL}video/smartbin-demo.mp4`
 const videoPlayer = ref(null)
+const videoSection = ref(null)
 const isPlaying = ref(false)
+
+let observer = null
 
 const togglePlay = () => {
   if (!videoPlayer.value) return
   if (videoPlayer.value.paused) {
+    videoPlayer.value.muted = false   // Unmute so the user hears audio
     videoPlayer.value.play()
   } else {
     videoPlayer.value.pause()
   }
 }
+
+// Auto-pause when the video section scrolls out of view
+onMounted(() => {
+  const section = document.getElementById('demo-video')
+  if (!section) return
+
+  observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting && videoPlayer.value && !videoPlayer.value.paused) {
+        videoPlayer.value.pause()
+        videoPlayer.value.muted = true  // Re-mute so it doesn't blast on next scroll-in
+      }
+    },
+    { threshold: 0.4 }   // Fires when less than 40% of the section is visible
+  )
+  observer.observe(section)
+})
+
+onBeforeUnmount(() => {
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+})
 </script>
 
 <style scoped>
