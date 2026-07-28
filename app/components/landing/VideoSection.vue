@@ -14,16 +14,29 @@
           <div class="video-back-glow pointer-events-none" />
           <div class="video-deco-ring pointer-events-none" />
           
-          <video 
-            ref="videoPlayer"
-            class="demo-video-player"
-            :src="videoUrl"
-            autoplay
-            loop
-            muted
-            playsinline
-            controls
-          ></video>
+          <!-- Inner wrapper for video and play button overlay -->
+          <div class="video-player-container" @click="togglePlay">
+            <video 
+              ref="videoPlayer"
+              class="demo-video-player"
+              :src="videoUrl"
+              loop
+              muted
+              playsinline
+              @play="isPlaying = true"
+              @pause="isPlaying = false"
+            ></video>
+            
+            <!-- Central Glassmorphic Play/Pause Button Overlay -->
+            <div class="play-btn-overlay" :class="{ 'is-playing': isPlaying }">
+              <svg v-if="!isPlaying" class="control-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <svg v-else class="control-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            </div>
+          </div>
         </div>
 
         <!-- Content Column -->
@@ -52,6 +65,16 @@ import { ref } from 'vue'
 const config = useRuntimeConfig()
 const videoUrl = `${config.app.baseURL}video/smartbin-demo.mp4`
 const videoPlayer = ref(null)
+const isPlaying = ref(false)
+
+const togglePlay = () => {
+  if (!videoPlayer.value) return
+  if (videoPlayer.value.paused) {
+    videoPlayer.value.play()
+  } else {
+    videoPlayer.value.pause()
+  }
+}
 </script>
 
 <style scoped>
@@ -93,6 +116,91 @@ const videoPlayer = ref(null)
   padding: 3rem 1rem;
 }
 
+/* Video Wrapper Container */
+.video-player-container {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 260px; /* Force optimal portrait aspect ratio sizing */
+  aspect-ratio: 9 / 16;
+  border-radius: 1.75rem;
+  overflow: hidden;
+  box-shadow: 
+    0 15px 35px -10 rgba(0, 0, 0, 0.35),
+    0 30px 60px -15px rgba(16, 185, 129, 0.2); 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  background: #000;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+@media (min-width: 640px) {
+  .video-player-container {
+    max-width: 300px;
+    border-radius: 2rem;
+  }
+}
+
+.video-player-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 20px 40px -5px rgba(0, 0, 0, 0.4),
+    0 35px 70px -10px rgba(16, 185, 129, 0.3);
+}
+
+.demo-video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none; /* Let clicks register on the parent video-player-container */
+}
+
+/* Central Glassmorphic Play Button */
+.play-btn-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: grid;
+  place-items: center;
+  color: var(--brand-green);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
+  z-index: 10;
+}
+
+.video-player-container:hover .play-btn-overlay {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: #ffffff;
+}
+
+.control-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  transition: transform 0.2s;
+}
+
+/* Hide play button when video is active */
+.play-btn-overlay.is-playing {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+  pointer-events: none;
+}
+
+/* Reveal pause button on hover when active */
+.video-player-container:hover .play-btn-overlay.is-playing {
+  opacity: 0.85;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
 /* Tech dotted pattern backing */
 .video-bg-pattern {
   position: absolute;
@@ -132,37 +240,6 @@ const videoPlayer = ref(null)
     width: 380px;
     height: 380px;
   }
-}
-
-.demo-video-player {
-  position: relative;
-  z-index: 5;
-  width: 100%;
-  max-width: 260px; /* Force optimal portrait aspect ratio sizing */
-  aspect-ratio: 9 / 16;
-  border-radius: 1.75rem;
-  display: block;
-  box-shadow: 
-    0 15px 35px -10px rgba(0, 0, 0, 0.35),
-    0 30px 60px -15px rgba(16, 185, 129, 0.2); 
-  outline: none;
-  background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-@media (min-width: 640px) {
-  .demo-video-player {
-    max-width: 300px;
-    border-radius: 2rem;
-  }
-}
-
-.demo-video-player:hover {
-  transform: translateY(-4px);
-  box-shadow: 
-    0 20px 40px -5px rgba(0, 0, 0, 0.4),
-    0 35px 70px -10px rgba(16, 185, 129, 0.3);
 }
 
 /* Content Column styling */
@@ -225,7 +302,7 @@ const videoPlayer = ref(null)
   border: 1px solid color-mix(in oklab, var(--brand-blue) 12%, transparent);
 }
 
-/* Ambient background glows */
+/* Ambient section glows */
 .video-glow-1 {
   position: absolute;
   top: 30%;
@@ -253,7 +330,12 @@ const videoPlayer = ref(null)
 }
 
 @keyframes rotate-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
