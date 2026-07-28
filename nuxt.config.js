@@ -62,6 +62,15 @@ export default defineNuxtConfig({
 
       link: [
         {
+          rel: "icon",
+          type: "image/x-icon",
+          href: "/favicon.ico"
+        },
+        {
+          rel: "shortcut icon",
+          href: "/favicon.ico"
+        },
+        {
           rel: "preconnect",
           href: "https://fonts.googleapis.com"
         },
