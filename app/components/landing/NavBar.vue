@@ -9,6 +9,7 @@
         <a href="#solution">Solution</a>
         <a href="#specs">Specs</a>
         <a href="#how">How it works</a>
+        <a href="#demo-video">Demo</a>
         <a href="#organization">About</a>
       </nav>
       <div class="nav-actions">
