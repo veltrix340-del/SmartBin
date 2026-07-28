@@ -7,6 +7,7 @@
     <LandingSolutionSection />
     <LandingSpecsSection />
     <LandingHowItWorks />
+    <LandingVideoSection />
     <LandingAboutPromoters />
     <LandingFooterSection />
   </div>
