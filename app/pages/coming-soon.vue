@@ -4,10 +4,10 @@
     <div class="absolute inset-0 grid-bg pointer-events-none" />
 
     <!-- Top simplified bar -->
-    <header class="header-bar-simple relative z-10 w-full">
-      <div class="container nav-content-simple">
+    <header class="header-bar">
+      <div class="container nav-content">
         <NuxtLink to="/" class="logo-container">
-          <img src="~/assets/images/Logo.webp" alt="SmartBin Logo" class="brand-logo-img" />
+          <img src="~/assets/images/Logo.webp" alt="SmartBin Logo - Virginasia eMarketing" class="brand-logo-img" />
           <span class="brand-name">SmartBin</span>
         </NuxtLink>
         <NuxtLink to="/" class="btn-back-home">
@@ -130,22 +130,7 @@ useHead({
   position: relative;
   overflow: hidden;
   background: var(--gradient-hero);
-}
-
-.header-bar-simple {
-  position: relative;
-  z-index: 10;
-  width: 100%;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.4);
-  background-color: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(16px);
-}
-
-.nav-content-simple {
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding-top: 100px; /* Offset the fixed 100px header-bar */
 }
 
 .btn-back-home {
